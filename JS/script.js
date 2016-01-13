@@ -1,38 +1,63 @@
-#en_tete img{
-    width:60%;   
-    height:30%;
-    display:block;
-    margin:auto;
+$bouton = document.getElementById("bouton");
+$multiplicateur = document.getElementById("multiplicateur");
+$boutonAutoclic = document.getElementById("boutonAutoclic");
+$score = document.getElementById("score");
+score = 0;
+nbMultiplicateur = 1;
+
+function afficherScore() {
+    $score.innerHTML = "Score : " + score;
 }
-body {
-    font-family: 'Gothic', sans-serif;
-    font-weight: 200;
-    font-size: 16px;
-    text-align: justify;
-    position: relative;
-    background: #B8B8B8;
-    width: 100%;
-    margin: 40px;
-    overflow-x: hidden;
+
+function afficherNbMultiplicateur() {
+    $multiplicateur.innerHTML = "Multiplicateur x" + nbMultiplicateur + " (prix du prochain : " + prix() + ")";
 }
-.container {
-    position: relative;
-    width: 600px;
-    margin: 0 auto;
-    color: #575e72;
-    cursor: crosshair;
-    padding: 30px;
-    text-align: center;
+
+function afficherPrixAutoclick(){
+    $boutonAutoclic.innerHTML = "Acheter un autoclick pour " + prixAutoClick() + " cookies";
 }
-bouton {
-    width: 250px;
-    height: 60px;
-    padding: 0;
-    margin: 10px 10px;
-    background: #4AC4FF;
-    border: 10;
-    cursor: crosshair;
-    font-size: 15px;
-    line-height: 15px;
-    text-align: center;
+
+function clic() {
+    score = score + nbMultiplicateur;
+    afficherScore();
 }
+
+function prix() {
+    return 20 * nbMultiplicateur * nbMultiplicateur;
+}
+
+function prixAutoClick(){
+    return 100;
+}
+
+function acheterMultiplicateur() {
+    if (score >= prix()) {
+        score = score - prix();
+        nbMultiplicateur = nbMultiplicateur + 1;
+        afficherNbMultiplicateur();
+        afficherScore();
+    } else {
+        alert("Votre score est insuffisant !");
+    }
+}
+
+function acheterAutoclick() {
+    if (score >= prixAutoClick()) {
+        score = score - prixAutoClick();
+        autoclicker();
+    } else {
+        alert("Votre nombre de cookies est insuffisant !");
+    }
+};
+
+function autoclicker(){
+     $stop = setInterval($bouton.onclick,1000);
+ 
+}
+
+$bouton.onclick = clic;
+$multiplicateur.onclick = acheterMultiplicateur;
+$boutonAutoclic.onclick = acheterAutoclick;
+afficherScore();
+afficherNbMultiplicateur();
+afficherPrixAutoclick();
